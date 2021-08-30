@@ -1,0 +1,95 @@
+swagger: "2.0"
+info:
+  version: "1.0.0"
+  title: "Pokemon store"
+host: "uebsvltlk7.execute-api.eu-west-1.amazonaws.com"
+basePath: "/dev"
+schemes:
+- "https"
+- "http"
+paths:
+  /products:
+    get:
+      tags:
+        - "product"
+      summary: "Get all products of the store"
+      description: "returns all products of the store"
+      produces:
+        - "application/json"
+      responses:
+        "200":
+          description: "Success"
+          schema:
+            $ref: "#/definitions/ProductList"
+        default:
+          description: "Unexpected Error"
+          schema:
+            $ref: "#/definitions/Error"
+  /products/{productID}:
+    get:
+      tags:
+      - "product"
+      summary: "Get a product by ID"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "productID"
+        in: "path"
+        description: "ID of product to return"
+        required: true
+        type: "string"
+      responses:
+        "200":
+          description: "Success"
+          schema:
+            $ref: "#/definitions/Product"
+        "400":
+          description: "Invalid ID supplied"
+        "404":
+          description: "Product not found"
+        default:
+          description: "Unexpected Error"
+          schema:
+            $ref: "#/definitions/Error"
+definitions:
+  Product:
+    type: "object"
+    required:
+      - "id"
+      - "title"
+    properties:
+      id:
+        type: "string"
+      title:
+        type: "string"
+      description:
+        type: "string"
+      price:
+        type: "integer"
+        format: "int64"
+  ProductList:
+    type: "object"
+    required:
+      - "items"
+    properties:
+      items: 
+        type: "array"
+        items:
+          $ref: "#/definitions/Product"
+  Error:
+    type: "object"
+    required:
+      - "data"
+    properties:
+      data:
+        type: "object"
+        required:
+          - "code"
+        properties:
+          code:
+            description: "the code of the error"
+            type: "integer"
+            format: "int64"
+          message:
+            description: "the message of the error"
+            type: "string"
