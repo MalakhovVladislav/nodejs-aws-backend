@@ -4,3 +4,7 @@ export interface Error {
         message: string
     }
 }
+
+export const badRequestMsg = "Bad Request"
+export const internalServerError = "Internal server error"
+export const notFoundMsg = "Not found"
