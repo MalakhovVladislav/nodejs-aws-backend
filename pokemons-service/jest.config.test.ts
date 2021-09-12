@@ -9,9 +9,6 @@ module.exports = {
     "<rootDir>/src/**/*.test.ts"
   ],
   moduleNameMapper: {
-    "^@handlers(.*)$": "<rootDir>/src/handlers/$1",
     "^@libs(.*)$": "<rootDir>/src/libs/$1",
-    "^@services(.*)$": "<rootDir>/src/services/$1",
-    "^@models(.*)$": "<rootDir>/src/models/$1",
   },
 };
