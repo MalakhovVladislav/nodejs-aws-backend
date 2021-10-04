@@ -27,17 +27,45 @@ const serverlessConfiguration: AWS = {
         Action: 's3:*',
         Resource: ['arn:aws:s3:::rs-csv-bucket/*', 'arn:aws:s3:::rs-csv-bucket'],
       },
+      {
+        Effect: 'Allow',
+        Resource: 'arn:aws:sqs:eu-west-1:946106612827:catalogItemsQueue', // TODO: set variable for arn
+        Action: 'sqs:*',
+      },
     ],
     environment: {
       AWS_NODEJS_CONNECTION_REUSE_ENABLED: '1',
       S3_BUCKET: process.env.S3_BUCKET,
       REGION: process.env.REGION,
-
+      SQS_URL: { Ref: 'catalogItemsQueue' },
     },
     lambdaHashingVersion: '20201221',
   },
+  resources: {
+    Resources: {
+      catalogItemsQueue: {
+        Type: 'AWS::SQS::Queue',
+        Properties: {
+          QueueName: 'catalogItemsQueue'
+        }
+      }
+    },
+    Outputs: {
+      catalogItemsQueueArn: {
+        Value: {
+          'Fn::GetAtt': [
+            'catalogItemsQueue',
+            'Arn'
+          ],
+        },
+        Export: {
+          Name: 'catalogItemsQueueArn'
+        }
+      },
+    }
+  },
   // import the function via paths
-  functions: { importProductsFile,importFileParser},
+  functions: { importProductsFile, importFileParser },
 };
 
 module.exports = serverlessConfiguration;
